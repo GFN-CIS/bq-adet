@@ -4,6 +4,8 @@
                ml_columns
                ,
                grouping_columns
+               ,
+               minimal_divergence
                )
                ,
                REGEXP_EXTRACT_ALL(ml_columns, '\\w+') as ml_columns
@@ -12,6 +14,7 @@
                ,
                to_hex(sha1(alert)) as alert_name
                ,
+               safe_cast(minimal_divergence as float64) as minimal_divergence
                from `${dataset}.int_adet_config`
 --                             left join `${dataset}.int_alerting_fields` using (table)
                where type is not null)
