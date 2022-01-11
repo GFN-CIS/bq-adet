@@ -1,6 +1,7 @@
 BEGIN
     declare q string;
     declare upsert_fields string;
+    declare insert_fields string;
     FOR cfg IN (
   SELECT
     *
@@ -14,6 +15,12 @@ BEGIN
                            and table_schema = '${dataset}'
                            and table_catalog = '${project}'
                            and column_name not in ('alert_name', 'date_col', 'group_cols'));
+     set insert_fields = (select string_agg(FORMAT("%t",  column_name), ',')
+                             from adet.INFORMATION_SCHEMA.COLUMNS
+                             where table_name = 'adet_cached_anomalies'
+                               and table_schema = '${dataset}'
+                               and table_catalog = '${project}'
+                              );
     set q =
             FORMAT("""
       MERGE INTO ${dataset}.adet_cached_anomalies trg USING (
@@ -24,7 +31,7 @@ BEGIN
         WHEN MATCHED THEN
           UPDATE SET %t
         WHEN NOT MATCHED BY TARGET THEN
-            INSERT ROW
+            INSERT (%t) values(%t)
         """,
                    cfg.alert_name, cfg.alert, cfg.explanation_format, cfg.entity_column,
                    `${project}.${dataset}.adet_get_anomalies_ddl`(
@@ -33,7 +40,7 @@ BEGIN
                                    array_to_string(cfg.grouping_columns, ', '), cfg.train_window_days,
                                    cfg.population_col, cfg.min_population),
                            cfg.model_name, cfg.error_check, cfg.anomaly_threshold
-                       ), upsert_fields
+                       ), upsert_fields, insert_fields, insert_fields
                 );
     call ${dataset}.adet_do_log("INFO", cfg.alert_name, "anomaly_update",
                                 TO_JSON_STRING((select as struct q as query)));
