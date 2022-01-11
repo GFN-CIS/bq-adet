@@ -25,7 +25,7 @@ BEGIN
             FORMAT("""
       MERGE INTO ${dataset}.adet_cached_anomalies trg USING (
           SELECT distinct %T as alert_name, %T as alert,FORMAT (%t) as explanation, %t as entity, date_col, group_cols,
-          metric, is_anomaly, is_error, direction, divergence, lower_bound, upper_bound, anomaly_probability,population from (%t)
+          metric, is_anomaly, is_error, direction, divergence, lower_bound, upper_bound, anomaly_probability,population, is_filtered from (%t)
         ) src
         on src.alert_name=trg.alert_name and src.date_col=trg.date_col and src.group_cols=trg.group_cols
         WHEN MATCHED THEN
