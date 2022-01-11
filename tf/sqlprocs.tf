@@ -132,42 +132,6 @@ resource "google_bigquery_routine" "adet_update_anomalies" {
   routine_id      = "adet_update_anomalies"
   routine_type    = "PROCEDURE"
 }
-//(canonical_ddl STRING, model STRING, error_clause STRING, anomaly_threshold FLOAT64) RETURNS STRING LANGUAGE js AS R"""
-resource "google_bigquery_routine" "adet_get_anomalies_ddl" {
-  dataset_id      = local.adet_dataset_id
-  definition_body = module.template_files.files.adet_get_anomalies_ddl.content
-  project         = var.project_id
-  routine_id      = "adet_get_anomalies_ddl"
-  language        = "JAVASCRIPT"
-  return_type     = jsonencode(
-  {
-    typeKind = "STRING"
-  }
-  )
-
-  routine_type = "SCALAR_FUNCTION"
-
-  arguments {
-    data_type = jsonencode({ typeKind = "STRING" })
-    name      = "canonical_ddl"
-  }
-
-  arguments {
-    data_type = jsonencode({ typeKind = "STRING" })
-    name      = "model"
-  }
-
-  arguments {
-    data_type = jsonencode({ typeKind = "STRING" })
-    name      = "error_clause"
-  }
-
-  arguments {
-    data_type = jsonencode({ typeKind = "FLOAT64" })
-    name      = "anomaly_threshold"
-  }
-}
-
 resource "google_bigquery_routine" "adet_no_gaps_view_ddl" {
   dataset_id      = local.adet_dataset_id
   definition_body = module.template_files.files.adet_no_gaps_view_ddl.content
