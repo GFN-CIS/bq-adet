@@ -10,7 +10,7 @@ if (minimal_divergence === null)
   minimal_div_clause = 'FALSE';
 }
 else {
-  minimal_div_clause = \` divergence < $${minimal_divergence} \`;
+  minimal_div_clause = ` divergence < $${minimal_divergence} `;
 }
 return `
 WITH canonical as ($${canonical_ddl} )
