@@ -2,7 +2,7 @@ resource "google_bigquery_routine" "adet_get_anomalies_ddl" {
   dataset_id      = local.adet_dataset_id
   definition_body = <<-EOT
           population_clause = ' TRUE ';
-if (population_col != = null & min_population != = null) { population_clause = `$${population}>=$${min_population}`;
+if (population_col !== null & min_population !== null) { population_clause = `$${population}>=$${min_population}`;
 }
 return `
 WITH
