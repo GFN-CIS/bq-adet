@@ -1,5 +1,8 @@
 resource "google_bigquery_table" "adet_config" {
-  depends_on          = [google_bigquery_table.int_adet_config, google_bigquery_routine.adet_canonical_ddl]
+  depends_on          = [
+    google_bigquery_table.int_adet_config, google_bigquery_routine.adet_canonical_ddl,
+    google_bigquery_routine.adet_get_anomalies_ddl
+  ]
   dataset_id          = local.adet_dataset_id
   project             = var.project_id
   table_id            = "adet_config"
