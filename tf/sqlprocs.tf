@@ -80,49 +80,7 @@ resource "google_bigquery_routine" "adet_stat_significance" {
   }
 
 }
-resource "google_bigquery_routine" "adet_canonical_ddl" {
-  dataset_id      = local.adet_dataset_id
-  definition_body = module.template_files.files.adet_canonical_ddl.content
-  project         = var.project_id
-  routine_id      = "adet_canonical_ddl"
-  language        = "JAVASCRIPT"
-  return_type     = jsonencode(
-  {
-    typeKind = "STRING"
-  }
-  )
 
-  routine_type = "SCALAR_FUNCTION"
-
-  arguments {
-    data_type = jsonencode({ typeKind = "STRING" })
-    name      = "source_table"
-  }
-  arguments {
-    data_type = jsonencode({ typeKind = "STRING" })
-    name      = "date_col"
-  }
-  arguments {
-    data_type = jsonencode({ typeKind = "STRING" })
-    name      = "metric_col"
-  }
-  arguments {
-    data_type = jsonencode({ typeKind = "STRING" })
-    name      = "group_cols"
-  }
-  arguments {
-    data_type = jsonencode({ typeKind = "INT64" })
-    name      = "train_window_days"
-  }
-  arguments {
-    data_type = jsonencode({ typeKind = "STRING" })
-    name      = "population_col"
-  }
-  arguments {
-    data_type = jsonencode({ typeKind = "INT64" })
-    name      = "min_population"
-  }
-}
 resource "google_bigquery_routine" "adet_update_anomalies" {
   depends_on      = [google_bigquery_routine.adet_canonical_ddl, google_bigquery_routine.adet_get_anomalies_ddl]
   dataset_id      = local.adet_dataset_id

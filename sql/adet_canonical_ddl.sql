@@ -1,5 +1,5 @@
 population_clause = ' TRUE ';
-if (population_col != = null & min_population != = null) { population_clause = `$${population}>=$${min_population}`;
+if (population_col !== null & min_population !== null) { population_clause = `$${population}>=$${min_population}`;
 }
 return `
 WITH
