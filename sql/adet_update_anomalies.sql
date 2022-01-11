@@ -39,7 +39,7 @@ BEGIN
                                    cfg.TABLE, cfg.date_column, cfg.ml_columns[OFFSET(0)],
                                    array_to_string(cfg.grouping_columns, ', '), cfg.train_window_days,
                                    cfg.population_col, cfg.min_population),
-                           cfg.model_name, cfg.error_check, cfg.anomaly_threshold
+                           cfg.model_name, cfg.error_check, cfg.anomaly_threshold, cfg.minimal_divergence
                        ), upsert_fields, insert_fields, insert_fields
                 );
     call ${dataset}.adet_do_log("INFO", cfg.alert_name, "anomaly_update",

@@ -82,7 +82,8 @@ resource "google_bigquery_table" "adet_cached_alerts" {
     { name = "population", type = "FLOAT" },
     { name = "lower_bound", type = "FLOAT" },
     { name = "upper_bound", type = "FLOAT" },
-    { name = "anomaly_probability", type = "FLOAT" }
+    { name = "anomaly_probability", type = "FLOAT" },
+    { name = "is_filtered", type = "BOOLEAN" }
   ])
 
 }
