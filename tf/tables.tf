@@ -19,7 +19,7 @@ resource "google_bigquery_table" "adet_anomalies" {
   table_id            = "adet_anomalies"
   deletion_protection = false
   view {
-    query          = "select * from ${local.adet_dataset_id}.adet_cached_anomalies where is_anomaly = TRUE "
+    query          = "select * from ${local.adet_dataset_id}.adet_cached_anomalies where is_anomaly = TRUE and is_filtered=FALSE"
     use_legacy_sql = false
   }
 }
